@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
+  <link href="http://s3.amazonaws.com/codecademy-content/courses/ltp2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="./Style/style.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <div class="header">
+      <div class="container">
+        <div class="browse">
+          <a href="#"><h3 id="browse-link">Browse</h3></a>
+        </div>
+        <div class="search">
+          <input id="search-text" type="text" placeholder="Enter a title" />
+          <input id="search-button" type="button" value="Search" />
+      </div>
+      </div>
+    </div>
+
+    <div class="products container">
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.2.19.min.js"></script>
+    <script src="./Classes/Product.js"></script>
+    <script src="./Classes/Controller.js"></script>
+    <script src="./Classes/Main.js"></script>
+  </body>
+</html>
