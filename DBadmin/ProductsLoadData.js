@@ -8,8 +8,6 @@ AWS.config.update({
 
 var dynamodbDoc = new AWS.DynamoDB.DocumentClient();
 
-console.log("Importing movies into DynamoDB. Please wait.");
-
 var allProducts = JSON.parse(fs.readFileSync('products.json', 'utf8'));
 allProducts.forEach(function(product) {
     var params = {
