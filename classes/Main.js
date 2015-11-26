@@ -16,7 +16,6 @@ var c = new Controller();
   });
 
   $('#browse-link').click(function() {
-    console.log("clicked");
     c.listTitles();
   });
 

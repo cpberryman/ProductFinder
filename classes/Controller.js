@@ -84,7 +84,6 @@ Controller.prototype.searchForTitle = function(term) {
           for(i=0;i<products.length;i++) {
             var s = products[i].getTitle().toUpperCase();
             if (s.indexOf(searchTerm) > -1) {
-              //console.log(s);
               $('.products').append(products[i].getInformation());
             }
             $('.product').click(function() {
