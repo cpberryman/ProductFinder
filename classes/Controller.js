@@ -2,16 +2,27 @@
  * Constructor of the Controller class which initialises DynamoDB connection
  *
  * Modification history
- * Version	Modifier	Date		Change				 Reason
- * 0.1.0	Chris		25-11-2015	First release	 Requirements
+ * Version	Modifier	Date		Change				         Reason
+ * 0.1.0	Chris		25-11-2015	First release	         Requirements
+ * 0.2.0	Chris		29-11-2015	Amazon Cognito config	 Requirements
  */
 var Controller = function() {
-  AWS.config = new AWS.Config();
-  AWS.config.accessKeyId = "###########";
-  AWS.config.secretAccessKey = "############";
-  AWS.config.region = "us-west-2";
-  AWS.config.endpoint = "http://localhost:8000";
 
+  // Initialize the Amazon Cognito credentials provider
+  AWS.config = new AWS.Config();
+  AWS.config.region = 'eu-west-1'; // Region
+  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: 'eu-west-1:dc260b3f-e468-4482-9885-b674b707bbb1',
+  });
+
+  AWS.config.credentials.get(function(){
+    // Credentials will be available when this function is called.
+    var accessKeyId = AWS.config.credentials.accessKeyId;
+    var secretAccessKey = AWS.config.credentials.secretAccessKey;
+    var sessionToken = AWS.config.credentials.sessionToken;
+});
+
+  AWS.config.endpoint = "https://dynamodb.eu-west-1.amazonaws.com";
   dynamodbDoc = new AWS.DynamoDB.DocumentClient();
 }
 
@@ -20,8 +31,9 @@ var Controller = function() {
  * Lists all product titles and associated information in the DOM
  *
  * Modification history
- * Version	Modifier	Date		Change				 Reason
- * 0.1.0	Chris		25-11-2015	First release	 Requirements
+ * Version	Modifier	Date		Change				            Reason
+ * 0.1.0	Chris		25-11-2015	First release	           Requirements
+ * 0.2.0	Chris		25-11-2015  Added author variable 	 Requirements
  */
 Controller.prototype.listTitles = function() {
   var params = {
@@ -32,13 +44,14 @@ Controller.prototype.listTitles = function() {
       if (err)
           console.log(JSON.stringify(err, null, 2));
       else
+         console.log(data);
           var items = data.Items;
           for (i=0;i<items.length;i++) {
             var title = items[i].TitleText;
-            var publisher = items[i].Publisher.PublisherName;
-            var language = items[i].Language.LanguageCode;
-            var availability = items[i].SupplyDetail.ProductAvailability;
-            var p = new Product(title, publisher, language, availability);
+            var author = items[i].Author;
+            var publisher = items[i].PublisherName;
+            var language = items[i].LanguageCode;
+            var p = new Product(title, author, publisher, language);
             products.push(p);
           }
           for(i=0;i<products.length;i++) {
@@ -61,6 +74,7 @@ Controller.prototype.listTitles = function() {
  * Modification history
  * Version	Modifier	Date		Change				 Reason
  * 0.1.0	Chris		25-11-2015	First release	 Requirements
+ * 0.2.0	Chris		25-11-2015  Added author variable 	 Requirements
  */
 Controller.prototype.searchForTitle = function(term) {
   var searchTerm = term.toUpperCase();
@@ -75,10 +89,10 @@ Controller.prototype.searchForTitle = function(term) {
           var items = data.Items;
           for (i=0;i<items.length;i++) {
             var title = items[i].TitleText;
-            var publisher = items[i].Publisher.PublisherName;
-            var language = items[i].Language.LanguageCode;
-            var availability = items[i].SupplyDetail.ProductAvailability;
-            var p = new Product(title, publisher, language, availability);
+            var author = items[i].Author;
+            var publisher = items[i].PublisherName;
+            var language = items[i].LanguageCode;
+            var p = new Product(title, author, publisher, language);
             products.push(p);
           }
           for(i=0;i<products.length;i++) {
