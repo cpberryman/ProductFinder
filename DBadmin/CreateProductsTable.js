@@ -10,10 +10,10 @@ var dynamodb = new AWS.DynamoDB();
 var params = {
     TableName : "Products",
     KeySchema: [
-        { AttributeName: "TitleText", KeyType: "HASH"}  //Partition key
+        { AttributeName: "ID", KeyType: "HASH"}  //Partition key
     ],
     AttributeDefinitions: [
-        { AttributeName: "TitleText", AttributeType: "S" }
+        { AttributeName: "ID", AttributeType: "S" }
     ],
     ProvisionedThroughput: {
         ReadCapacityUnits: 10,
