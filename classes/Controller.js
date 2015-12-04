@@ -8,7 +8,7 @@
  */
 var Controller = function() {
 
- AWS.config = new AWS.Config();
+ /*AWS.config = new AWS.Config();
  AWS.config.region = 'eu-west-1';
  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
      IdentityPoolId: 'eu-west-1:dc260b3f-e468-4482-9885-b674b707bbb1',
@@ -21,7 +21,15 @@ var Controller = function() {
 });
 
  AWS.config.endpoint = "https://dynamodb.eu-west-1.amazonaws.com";
- dynamodbDoc = new AWS.DynamoDB.DocumentClient();
+ dynamodbDoc = new AWS.DynamoDB.DocumentClient();*/
+
+ AWS.config = new AWS.Config();
+ AWS.config.accessKeyId = "AKIAIZYHHONHZZZD3Q6A";
+ AWS.config.secretAccessKey = "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";
+ AWS.config.region = "us-west-2";
+ AWS.config.endpoint = "http://localhost:8000";
+
+ dynamodb = new AWS.DynamoDB.DocumentClient();
 
 }
 
@@ -52,69 +60,115 @@ var Controller = function() {
           console.log(JSON.stringify(err, null, 2));
       else
           var items = data.Items;
-
-          for (i = 0;i < items.length; i++) {
-            var title = items[i].Title.TitleText;
-            var contributor = items[i].Contributor;
-            var contributorStr = "";
-            if(contributor instanceof Array) {
-              for (j = 0; j < contributor.length; j++) {
-                if(j === contributor.length - 1) {
-                  contributorStr += contributor[j].KeyNames;
-                } else {
-                  contributorStr += contributor[j].KeyNames + ", ";
-                }
-              }
-            } else {
-              contributorStr = contributor.KeyNames;
-            }
-
-            var language = items[i].Language.LanguageCode;
-            var publisher = items[i].Publisher.PublisherName;
-            var supplierName = items[i].SupplyDetail.SupplierName;
-            var productAvailability = items[i].SupplyDetail.ProductAvailability;
-            var countryOfPublication = items[i].CountryOfPublication;
-
-            var info =   '<div class="product">'
-                         + '<div class="item row">'
-                         + '<div class="col-xs-3">'
-                         + '</div>'
-                         + '<div class="col-xs-6">'
-                         + '<p class="title">'+title+'</p>'
-                         + '</div>'
-                         + '<div class="col-xs-3">'
-                         + '</div>'
-                         + '</div>'
-                         + '<div class="description row">'
-                         + '<div class="col-xs-3">&nbsp;</div>'
-                         + '<div class="col-xs-6">'
-                         + '<h1>'+title+'</h1>'
-                         + '<p>Contributors: '+contributorStr+'</p>'
-                         + '<p>Language: '+language+'</p>'
-                         + '<p>Publisher: '+publisher+'</p>'
-                         + '<p>Supplier: '+supplierName+'</p>'
-                         + '<p>Availability: '+productAvailability+'</p>'
-                         + '<p>Country of publication: '+countryOfPublication+'</p>'
-                         + '</div>'
-                         + '</div>'
-                         + '</div>'
-                         + '</div>';
-
-              $('.products').append(info);
-              $('.product').click(function() {
-                $('.product').removeClass('current');
-                $('.description').hide();
-                $(this).addClass('current');
-                $(this).children('.description').show();
-              });
-          }
+          Controller.prototype.getAttributes(items);
   });
+ }
+
+ /**
+  * Retrieves the required attributes from the a database query.
+  *
+  * Modification history
+  * Version	Modifier	Date		Change				  Reason
+  * 0.1.0	Chris		25-11-2015	First release	  Requirements
+  */
+ Controller.prototype.getAttributes = function(items) {
+
+   for (i = 0;i < items.length; i++) {
+     var title = items[i].Title.TitleText;
+     var contributor = items[i].Contributor;
+     var contributorStr = "";
+     if(contributor instanceof Array) {
+       for (j = 0; j < contributor.length; j++) {
+         if(j === contributor.length - 1) {
+           contributorStr += contributor[j].KeyNames;
+         } else {
+           contributorStr += contributor[j].KeyNames + ", ";
+         }
+       }
+     } else {
+       contributorStr = contributor.KeyNames;
+     }
+
+     var language = items[i].Language.LanguageCode;
+     var publisher = items[i].Publisher.PublisherName;
+     var supplierName = items[i].SupplyDetail.SupplierName;
+     var productAvailability = items[i].SupplyDetail.ProductAvailability;
+     var countryOfPublication = items[i].CountryOfPublication;
+
+     /*var info =   '<div class="product">'
+                  + '<div class="item row">'
+                  + '<div class="col-xs-3">'
+                  + '</div>'
+                  + '<div class="col-xs-6">'
+                  + '<p class="title">'+title+'</p>'
+                  + '</div>'
+                  + '<div class="col-xs-3">'
+                  + '</div>'
+                  + '</div>'
+                  + '<div class="description row">'
+                  + '<div class="col-xs-3">&nbsp;</div>'
+                  + '<div class="col-xs-6">'
+                  + '<h1>'+title+'</h1>'
+                  + '<p>Contributors: '+contributorStr+'</p>'
+                  + '<p>Language: '+language+'</p>'
+                  + '<p>Publisher: '+publisher+'</p>'
+                  + '<p>Supplier: '+supplierName+'</p>'
+                  + '<p>Availability: '+productAvailability+'</p>'
+                  + '<p>Country of publication: '+countryOfPublication+'</p>'
+                  + '</div>'
+                  + '</div>'
+                  + '</div>'
+                  + '</div>';*/
+
+    var element =  '<div class="col-xs-6">'
+                 + '<p class="title">'+title+'</p>'
+                 + '</div>'
+                 + '<div class="col-xs-3">'
+                 + '</div>'
+                 + '</div>'
+                 + '<div class="description row">'
+                 + '<div class="col-xs-3">&nbsp;</div>'
+                 + '<div class="col-xs-6">'
+                 + '<h1>'+title+'</h1>'
+                 + '<p>Contributors: '+contributorStr+'</p>'
+                 + '<p>Language: '+language+'</p>'
+                 + '<p>Publisher: '+publisher+'</p>'
+                 + '<p>Supplier: '+supplierName+'</p>'
+                 + '<p>Availability: '+productAvailability+'</p>'
+                 + '<p>Country of publication: '+countryOfPublication+'</p>'
+                 + '</div>'
+                 + '</div>';
+
+                 Controller.prototype.appendProductInformation(element);
+
+
+   }
+ }
+
+ Controller.prototype.appendProductInformation = function(element) {
+
+   var info =   '<div class="product">'
+                + '<div class="item row">'
+                + '<div class="col-xs-3">'
+                + '</div>'
+                + element
+                + '</div>'
+                + '</div>';
+
+                $('.products').append(info);
+                $('.product').click(function() {
+                  $('.product').removeClass('current');
+                  $('.description').hide();
+                  $(this).addClass('current');
+                  $(this).children('.description').show();
+                });
+
  }
 
  /**
   * Lists all products which partially match a search term in the DOM
   *
-  * @param term(String) the search term
+  * @param searchTerm(String) the search term
   *
   * Modification history
   * Version	Modifier	Date		Change				               Reason
