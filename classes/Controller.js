@@ -65,107 +65,6 @@ var Controller = function() {
  }
 
  /**
-  * Retrieves the required attributes from the a database query.
-  *
-  * Modification history
-  * Version	Modifier	Date		Change				  Reason
-  * 0.1.0	Chris		25-11-2015	First release	  Requirements
-  */
- Controller.prototype.getAttributes = function(items) {
-
-   for (i = 0;i < items.length; i++) {
-     var title = items[i].Title.TitleText;
-     var contributor = items[i].Contributor;
-     var contributorStr = "";
-     if(contributor instanceof Array) {
-       for (j = 0; j < contributor.length; j++) {
-         if(j === contributor.length - 1) {
-           contributorStr += contributor[j].KeyNames;
-         } else {
-           contributorStr += contributor[j].KeyNames + ", ";
-         }
-       }
-     } else {
-       contributorStr = contributor.KeyNames;
-     }
-
-     var language = items[i].Language.LanguageCode;
-     var publisher = items[i].Publisher.PublisherName;
-     var supplierName = items[i].SupplyDetail.SupplierName;
-     var productAvailability = items[i].SupplyDetail.ProductAvailability;
-     var countryOfPublication = items[i].CountryOfPublication;
-
-     /*var info =   '<div class="product">'
-                  + '<div class="item row">'
-                  + '<div class="col-xs-3">'
-                  + '</div>'
-                  + '<div class="col-xs-6">'
-                  + '<p class="title">'+title+'</p>'
-                  + '</div>'
-                  + '<div class="col-xs-3">'
-                  + '</div>'
-                  + '</div>'
-                  + '<div class="description row">'
-                  + '<div class="col-xs-3">&nbsp;</div>'
-                  + '<div class="col-xs-6">'
-                  + '<h1>'+title+'</h1>'
-                  + '<p>Contributors: '+contributorStr+'</p>'
-                  + '<p>Language: '+language+'</p>'
-                  + '<p>Publisher: '+publisher+'</p>'
-                  + '<p>Supplier: '+supplierName+'</p>'
-                  + '<p>Availability: '+productAvailability+'</p>'
-                  + '<p>Country of publication: '+countryOfPublication+'</p>'
-                  + '</div>'
-                  + '</div>'
-                  + '</div>'
-                  + '</div>';*/
-
-    var element =  '<div class="col-xs-6">'
-                 + '<p class="title">'+title+'</p>'
-                 + '</div>'
-                 + '<div class="col-xs-3">'
-                 + '</div>'
-                 + '</div>'
-                 + '<div class="description row">'
-                 + '<div class="col-xs-3">&nbsp;</div>'
-                 + '<div class="col-xs-6">'
-                 + '<h1>'+title+'</h1>'
-                 + '<p>Contributors: '+contributorStr+'</p>'
-                 + '<p>Language: '+language+'</p>'
-                 + '<p>Publisher: '+publisher+'</p>'
-                 + '<p>Supplier: '+supplierName+'</p>'
-                 + '<p>Availability: '+productAvailability+'</p>'
-                 + '<p>Country of publication: '+countryOfPublication+'</p>'
-                 + '</div>'
-                 + '</div>';
-
-                 Controller.prototype.appendProductInformation(element);
-
-
-   }
- }
-
- Controller.prototype.appendProductInformation = function(element) {
-
-   var info =   '<div class="product">'
-                + '<div class="item row">'
-                + '<div class="col-xs-3">'
-                + '</div>'
-                + element
-                + '</div>'
-                + '</div>';
-
-                $('.products').append(info);
-                $('.product').click(function() {
-                  $('.product').removeClass('current');
-                  $('.description').hide();
-                  $(this).addClass('current');
-                  $(this).children('.description').show();
-                });
-
- }
-
- /**
   * Lists all products which partially match a search term in the DOM
   *
   * @param searchTerm(String) the search term
@@ -202,63 +101,110 @@ var Controller = function() {
           console.log(JSON.stringify(err, null, 2));
       else
           var items = data.Items;
-
-          for (i = 0;i < items.length; i++) {
-            var title = items[i].Title.TitleText;
-            var contributor = items[i].Contributor;
-            var contributorStr = "";
-            if(contributor instanceof Array) {
-              for (j = 0; j < contributor.length; j++) {
-                if(j === contributor.length - 1) {
-                  contributorStr += contributor[j].KeyNames;
-                } else {
-                  contributorStr += contributor[j].KeyNames + ", ";
-                }
-              }
-            } else {
-              contributorStr = contributor.KeyNames;
-            }
-
-
-          var language = items[i].Language.LanguageCode;
-          var publisher = items[i].Publisher.PublisherName;
-          var supplierName = items[i].SupplyDetail.SupplierName;
-          var productAvailability = items[i].SupplyDetail.ProductAvailability;
-          var countryOfPublication = items[i].CountryOfPublication;
-
-         var info =   '<div class="product">'
-                       + '<div class="item row">'
-                       + '<div class="col-xs-3">'
-                       + '</div>'
-                       + '<div class="col-xs-6">'
-                       + '<p class="title">'+title+'</p>'
-                       + '</div>'
-                       + '<div class="col-xs-3">'
-                       + '</div>'
-                       + '</div>'
-                       + '<div class="description row">'
-                       + '<div class="col-xs-3">&nbsp;</div>'
-                       + '<div class="col-xs-6">'
-                       + '<h1>'+title+'</h1>'
-                       + '<p>Contributors: '+contributorStr+'</p>'
-                       + '<p>Language: '+language+'</p>'
-                       + '<p>Publisher: '+publisher+'</p>'
-                       + '<p>Supplier: '+supplierName+'</p>'
-                       + '<p>Availability: '+productAvailability+'</p>'
-                       + '<p>Country of publication: '+countryOfPublication+'</p>'
-                       + '</div>'
-                       + '</div>'
-                       + '</div>'
-                       + '</div>';
-
-                       $('.products').append(info);
-                       $('.product').click(function() {
-                         $('.product').removeClass('current');
-                         $('.description').hide();
-                         $(this).addClass('current');
-                         $(this).children('.description').show();
-                       });
-              }
+          Controller.prototype.getAttributes(items);
   });
+
+}
+
+/**
+ * Retrieves and displays the required attributes from the
+ * database query response.
+ *
+ * @param items(Array) the database query response.
+ *
+ * Modification history
+ * Version	Modifier	Date		Change				  Reason
+ * 0.1.0	Chris		04-12-2015	First release	  Requirements
+ */
+Controller.prototype.getAttributes = function(items) {
+
+  for (i = 0;i < items.length; i++) {
+
+    var title = items[i].Title.TitleText;
+
+    var element = '<div class="col-xs-6">'
+                + '<p class="title">'+title+'</p>'
+                + '</div>'
+                + '<div class="col-xs-3">'
+                + '</div>'
+                + '</div>'
+                + '<div class="description row">'
+                + '<div class="col-xs-3">&nbsp;</div>'
+                + '<div class="col-xs-6">'
+                + '<h1>'+title+'</h1>';
+
+    if (items[i].hasOwnProperty('Contributor')) {
+      var contributor = items[i].Contributor;
+      var contributorStr = "";
+      if(contributor instanceof Array) {
+        for (j = 0; j < contributor.length; j++) {
+          if(j === contributor.length - 1) {
+            contributorStr += contributor[j].KeyNames;
+          } else {
+            contributorStr += contributor[j].KeyNames + ", ";
+          }
+        }
+      } else {
+        contributorStr = contributor.KeyNames;
+      }
+      element += '<p>Contributor(s): '+contributorStr+'</p>';
+    }
+
+    if (items[i].hasOwnProperty('Language')) {
+      var language = items[i].Language.LanguageCode;
+      element += '<p>Language: '+language+'</p>';
+    }
+
+
+    if (items[i].hasOwnProperty('Publisher')) {
+      var publisher = items[i].Publisher.PublisherName;
+      element += '<p>Publisher: '+publisher+'</p>';
+    }
+
+    if (items[i].hasOwnProperty('SupplyDetail')) {
+      var supplierName = items[i].SupplyDetail.SupplierName;
+      var productAvailability = items[i].SupplyDetail.ProductAvailability;
+      element += '<p>Supplier: '+supplierName+'</p>';
+      element += '<p>Availability: '+productAvailability+'</p>';
+    }
+
+    if (items[i].hasOwnProperty('CountryOfPublication')) {
+      var countryOfPublication = items[i].CountryOfPublication;
+      element += '<p>Country of publication: '+countryOfPublication+'</p>';
+    }
+
+    element += '</div>'
+             + '</div>';
+
+   Controller.prototype.appendProductInformation(element);
+  }
+}
+
+/**
+ * Appends product information to the container.
+ *
+ * @param element(String) the 'div' element containing the product information.
+ *
+ * Modification history
+ * Version	Modifier	Date		  Change				  Reason
+ * 0.1.0	Chris		  04-12-2015	First release	  Requirements
+ */
+Controller.prototype.appendProductInformation = function(element) {
+
+  var info =   '<div class="product">'
+               + '<div class="item row">'
+               + '<div class="col-xs-3">'
+               + '</div>'
+               + element
+               + '</div>'
+               + '</div>';
+               //event handler for newly appended product element.
+               $('.products').append(info);
+               $('.product').click(function() {
+                 $('.product').removeClass('current');
+                 $('.description').hide();
+                 $(this).addClass('current');
+                 $(this).children('.description').show();
+               });
 
 }
