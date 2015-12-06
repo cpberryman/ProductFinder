@@ -1,38 +1,11 @@
+/*General*/
+
 body {
-  background-image: url('http://s3.amazonaws.com/codecademy-content/courses/ltp2/img/reader/bg.png');
+  padding-top: 40px;
   -webkit-background-size: cover;
      -moz-background-size: cover;
        -o-background-size: cover;
           background-size: cover;
-}
-
-/*Header */
-
-.header {
-  background-color: rgba(255, 255, 255, 0.95);
-  border-bottom: 2px solid #ddd;
-
-  font-family: 'Calibri', sans-serif;
-  font-weight: 300;
-
-  font-size: 25px;
-  padding: 15px;
-}
-
-/*Browse*/
-
-.browse {
-  float: left;
-  list-style: none;
-  margin-top: 5px;
-}
-
-/*Search*/
-
-.header .search {
-  float: right;
-  list-style: none;
-  margin-top: 5px;
 }
 
 p {
@@ -41,6 +14,18 @@ p {
 
 .row {
   margin: 0;
+}
+
+/*Browse*/
+
+.browse {
+  float: right;
+}
+
+/*Search*/
+
+.search {
+  float: left;
 }
 
 /*Products and descriptions*/
@@ -71,11 +56,13 @@ p {
 }
 
 .item .title {
+  text-align: justify;
   font-weight: bold;
 }
 
 
 .description {
+  text-align: justify;
   display: none;
   padding-top: 10px;
   padding-bottom: 10px;
