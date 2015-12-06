@@ -84,11 +84,12 @@ var Controller = function() {
       ProjectionExpression:
           "Title.TitleText, Contributor, #lang, Publisher, SupplyDetail, CountryOfPublication",
 
-      FilterExpression: "contains(Title.TitleText, :title1) OR contains(Title.TitleText, :title2)",
+      FilterExpression: "contains(Title.TitleText, :upperCaseSearchTerm) OR contains(Title.TitleText, :lowerCaseSearchTerm) OR contains(Title.TitleText, :originalTerm)",
 
       ExpressionAttributeValues: {
-          ":title1": termUpperCase,
-          ":title2": termLowerCase
+          ":upperCaseSearchTerm": termUpperCase,
+          ":lowerCaseSearchTerm": termLowerCase,
+          ":originalTerm": searchTerm
       },
       ExpressionAttributeNames: {
         "#lang": "Language"
@@ -144,10 +145,11 @@ Controller.prototype.getAttributes = function(items) {
             contributorStr += contributor[j].KeyNames + ", ";
           }
         }
+        element += '<p>Contributors: '+contributorStr+'</p>';
       } else {
         contributorStr = contributor.KeyNames;
+        element += '<p>Contributor: '+contributorStr+'</p>';
       }
-      element += '<p>Contributor(s): '+contributorStr+'</p>';
     }
 
     if (items[i].hasOwnProperty('Language')) {
