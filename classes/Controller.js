@@ -8,7 +8,7 @@
  */
 var Controller = function() {
 
- /*AWS.config = new AWS.Config();
+ AWS.config = new AWS.Config();
  AWS.config.region = 'eu-west-1';
  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
      IdentityPoolId: 'eu-west-1:dc260b3f-e468-4482-9885-b674b707bbb1',
@@ -21,13 +21,7 @@ var Controller = function() {
 });
 
  AWS.config.endpoint = "https://dynamodb.eu-west-1.amazonaws.com";
- dynamodbDoc = new AWS.DynamoDB.DocumentClient();*/
-
- AWS.config = new AWS.Config();
- AWS.config.accessKeyId = "AKIAIZYHHONHZZZD3Q6A";
- AWS.config.secretAccessKey = "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";
- AWS.config.region = "us-west-2";
- AWS.config.endpoint = "http://localhost:8000";
+ dynamodbDoc = new AWS.DynamoDB.DocumentClient();
 
  dynamodb = new AWS.DynamoDB.DocumentClient();
 
