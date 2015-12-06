@@ -21,8 +21,6 @@ var Controller = function() {
 });
 
  AWS.config.endpoint = "https://dynamodb.eu-west-1.amazonaws.com";
- dynamodbDoc = new AWS.DynamoDB.DocumentClient();
-
  dynamodb = new AWS.DynamoDB.DocumentClient();
 
 }
